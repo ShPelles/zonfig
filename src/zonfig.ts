@@ -1,4 +1,7 @@
 import { z } from "zod";
+import EnvReader from "./readers/env-reader";
+
+const reader = new EnvReader();
 
 export function zonfig<T extends z.ZodObject<z.ZodRawShape>>(schema: T) {
   const preprocessedSchema = z.preprocess((data) => {
@@ -7,9 +10,10 @@ export function zonfig<T extends z.ZodObject<z.ZodRawShape>>(schema: T) {
     }
 
     for (const key of Object.keys(schema.shape)) {
-      const upperKey = key.toUpperCase();
-      if (process.env[upperKey] !== undefined) {
-        data[key] = process.env[upperKey];
+      const value = reader.read(key);
+      const hasValue = value !== undefined;
+      if (hasValue) {
+        data[key] = value;
       }
     }
 
