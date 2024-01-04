@@ -10,7 +10,7 @@ export function zonfig<T extends z.ZodObject<z.ZodRawShape>>(schema: T) {
     }
 
     for (const key of Object.keys(schema.shape)) {
-      const value = reader.read(key);
+      const value = reader.read([key]);
       const hasValue = value !== undefined;
       if (hasValue) {
         data[key] = value;

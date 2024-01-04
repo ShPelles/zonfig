@@ -1,5 +1,6 @@
 export default class EnvReader {
-  public read(key: string): string | undefined {
-    return process.env[key.toUpperCase()];
+  public read(path: string[]): string | undefined {
+    const key = path.join("_").toUpperCase();
+    return process.env[key];
   }
 }
